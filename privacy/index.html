@@ -18,26 +18,27 @@
 <body>
 <main>
 <h1>AI Ads Studio Privacy Policy</h1>
-<p class="meta">Last updated: 6 October 2026</p>
+<p class="meta">Last updated: 30 October 2026</p>
 
-<p>AI Ads Studio is an internal advertising tool operated by Hvalby Digital, Norway ("we", "us"). It connects to the Meta Marketing API to create advertisements and read advertising performance for businesses that have authorized us to manage their Meta ad accounts. It is not a consumer app, and it does not collect information from the people who see those advertisements.</p>
+<p>AI Ads Studio is an internal advertising tool operated by Hvalby Digital, Norway ("we", "us"). It connects to the Meta Marketing API to create advertisements and read advertising performance for businesses that have authorized us to manage their Meta ad accounts, and to the TikTok Content Posting API to publish videos to TikTok accounts whose owners have authorized it. It is not a consumer app, and it does not collect information from the people who see those advertisements.</p>
 
 <h2>What information we access</h2>
 <ul>
   <li><strong>Advertising data</strong> of authorized ad accounts: campaign, ad set and ad settings, ad creatives and their text, and performance statistics such as spend, impressions, clicks, conversions and conversion values. These statistics are aggregated by Meta and do not identify individual people.</li>
   <li><strong>Business asset identifiers</strong>: the IDs of the ad accounts, Facebook Pages, Instagram accounts and Meta pixels we are authorized to use.</li>
   <li><strong>Basic profile of the authorizing person</strong>: the name and Meta user ID of the person who grants access, and the access token Meta issues for that authorization.</li>
+  <li><strong>TikTok</strong>: for a TikTok account whose owner authorizes AI Ads Studio, its basic profile (open ID, display name and avatar), the posting options TikTok returns for it (such as the allowed privacy levels and the maximum video length), the access and refresh tokens TikTok issues, and the status and IDs of the videos we publish to it.</li>
 </ul>
-<p>We do not access personal messages, friend lists, or information about the individual people reached by advertisements.</p>
+<p>We do not access personal messages, friend lists, followers, comments, or information about the individual people reached by advertisements or posts.</p>
 
 <h2>How we use it</h2>
-<p>Only to provide the advertising services the business has asked for: preparing and uploading ads, creating ads and ad sets (always paused until the business approves them going live), and analysing which creative performs better so that future ads improve.</p>
+<p>Only to provide the advertising services the business has asked for: preparing and uploading ads, creating ads and ad sets (always paused until the business approves them going live), and analysing which creative performs better so that future ads improve. On TikTok, we upload and publish only videos the account owner has approved, with the caption and privacy setting they chose.</p>
 
 <h2>Storage and security</h2>
 <p>Advertising data is stored in our private work files and private repository. Access tokens are stored in the operating system's encrypted credential store and are never shared or published. We do not sell, rent or share this information with third parties, except where required by law.</p>
 <p>We use these service providers, which process data only on our behalf:</p>
 <ul>
-  <li><strong>Cloudflare, Inc.</strong> (United States) hosts our connection page. When a business connects, the access token Meta issues is held there, encrypted, for at most 7 days until our system collects it once; it is then deleted.</li>
+  <li><strong>Cloudflare, Inc.</strong> (United States) hosts our connection page. When a business connects, the access token Meta issues is held there, encrypted, for at most 7 days until our system collects it once; it is then deleted. When a TikTok account owner authorizes us, Cloudflare relays TikTok's one-time authorization code to our system without storing it.</li>
   <li><strong>Anthropic, PBC</strong> (United States) provides the AI assistant we use to analyse advertising performance and plan creatives. It receives advertising data, never access tokens.</li>
   <li><strong>GitHub, Inc.</strong> (United States) hosts the private repository where our records, including advertising performance reports, are backed up.</li>
 </ul>
@@ -46,7 +47,7 @@
 <p>We keep advertising data for as long as we work with the business and for up to 24 months afterwards, for reporting. Access tokens are deleted when access is revoked or the working relationship ends.</p>
 
 <h2>Revoking access and deleting your data</h2>
-<p>You can revoke AI Ads Studio's access at any time: in Facebook, under Settings &amp; privacy → Settings → Business integrations (or Apps and websites), or for a business, in Meta Business Settings. To have the data we hold about you or your business deleted, email <a href="mailto:iver@hvalbydigital.no">iver@hvalbydigital.no</a> with the subject "Data deletion". We will delete it within 30 days and confirm by email.</p>
+<p>You can revoke AI Ads Studio's access at any time: in Facebook, under Settings &amp; privacy → Settings → Business integrations (or Apps and websites), or for a business, in Meta Business Settings. For TikTok, remove AI Ads Studio in the TikTok app under Settings and privacy → Security and permissions → Apps and services. To have the data we hold about you or your business deleted, email <a href="mailto:iver@hvalbydigital.no">iver@hvalbydigital.no</a> with the subject "Data deletion". We will delete it within 30 days and confirm by email.</p>
 
 <h2>Requests from public authorities</h2>
 <p>If a public authority asks us for personal data we hold, we review whether the request is lawful before responding, challenge requests we consider unlawful, disclose only the minimum information required, and keep a record of each request, our response and the legal reasoning behind it.</p>
