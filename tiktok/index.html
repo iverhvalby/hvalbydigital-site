@@ -1,0 +1,221 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>AI Ads Studio · Post to TikTok</title>
+<style>
+  :root { --text: #1d1d1f; --muted: #5f6368; --bg: #ffffff; --panel: #f5f5f7; --line: #e3e3e3; --accent: #fe2c55; --ok: #1e8e3e; --bad: #c5221f; }
+  @media (prefers-color-scheme: dark) { :root { --text: #ececec; --muted: #a0a0a0; --bg: #161616; --panel: #222; --line: #333; --ok: #5bb974; --bad: #f28b82; } }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--text); font: 16px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+  main { max-width: 920px; margin: 0 auto; padding: 32px 16px 64px; }
+  header { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin-bottom: 24px; }
+  h1 { font-size: 24px; margin: 0; }
+  .env { font-size: 13px; color: var(--muted); }
+  .grid { display: grid; grid-template-columns: minmax(0, 300px) minmax(0, 1fr); gap: 32px; }
+  @media (max-width: 720px) { .grid { grid-template-columns: 1fr; } }
+  video { width: 100%; border-radius: 12px; background: #000; max-height: 560px; }
+  .vmeta { font-size: 13px; color: var(--muted); margin-top: 6px; }
+  .account { display: flex; align-items: center; gap: 12px; padding: 12px; background: var(--panel); border-radius: 12px; margin-bottom: 20px; }
+  .account img { width: 44px; height: 44px; border-radius: 50%; object-fit: cover; background: var(--line); }
+  .account b { display: block; }
+  .account span { color: var(--muted); font-size: 14px; }
+  label.field { display: block; font-weight: 600; margin: 18px 0 6px; }
+  textarea, select { width: 100%; font: inherit; color: var(--text); background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: 10px; }
+  textarea { min-height: 110px; resize: vertical; }
+  .count { font-size: 12px; color: var(--muted); text-align: right; }
+  .row { display: flex; align-items: center; gap: 10px; padding: 8px 0; }
+  .row input { width: 18px; height: 18px; accent-color: var(--accent); }
+  .row.disabled { color: var(--muted); }
+  .hint { font-size: 13px; color: var(--muted); margin: 2px 0 0 28px; }
+  .box { border: 1px solid var(--line); border-radius: 12px; padding: 4px 14px 10px; margin-top: 18px; }
+  .consent { font-size: 14px; color: var(--muted); margin: 20px 0 12px; }
+  .consent a { color: var(--text); }
+  .actions { display: flex; gap: 12px; flex-wrap: wrap; }
+  button { font: inherit; font-weight: 600; border: 0; border-radius: 8px; padding: 12px 22px; cursor: pointer; }
+  button.post { background: var(--accent); color: #fff; }
+  button.post:disabled { opacity: .45; cursor: not-allowed; }
+  button.cancel { background: var(--panel); color: var(--text); }
+  .status { margin-top: 20px; padding: 14px; border-radius: 12px; background: var(--panel); display: none; }
+  .status.ok { color: var(--ok); }
+  .status.bad { color: var(--bad); }
+  .status pre { white-space: pre-wrap; font-size: 13px; color: var(--muted); margin: 8px 0 0; }
+  .error { color: var(--bad); font-size: 14px; min-height: 20px; margin-top: 8px; }
+  .notice { padding: 40px 0; color: var(--muted); }
+</style>
+</head>
+<body>
+<main>
+<header>
+  <h1>Post to TikTok</h1>
+  <div class="env" id="env">AI Ads Studio · Hvalby Digital</div>
+</header>
+
+<div id="loading" class="notice">Connecting to AI Ads Studio on this computer…</div>
+
+<div class="grid" id="app" hidden>
+  <div>
+    <video id="video" controls playsinline preload="metadata"></video>
+    <div class="vmeta" id="vmeta"></div>
+  </div>
+  <div>
+    <div class="account">
+      <img id="avatar" alt="">
+      <div><b id="nickname"></b><span id="username"></span></div>
+    </div>
+
+    <label class="field" for="caption">Caption</label>
+    <textarea id="caption"></textarea>
+    <div class="count" id="count"></div>
+
+    <label class="field" for="privacy">Who can view this video</label>
+    <select id="privacy"><option value="" selected disabled>Select who can view this video</option></select>
+
+    <label class="field">Allow users to</label>
+    <div class="row" id="row-comment"><input type="checkbox" id="comment"><label for="comment">Comment</label></div>
+    <div class="row" id="row-duet"><input type="checkbox" id="duet"><label for="duet">Duet</label></div>
+    <div class="row" id="row-stitch"><input type="checkbox" id="stitch"><label for="stitch">Stitch</label></div>
+
+    <div class="box">
+      <div class="row"><input type="checkbox" id="disclose"><label for="disclose"><b>Disclose video content</b></label></div>
+      <div class="hint">Turn on to disclose that this video promotes goods or services in exchange for something of value. Your video could promote yourself, a third party, or both.</div>
+      <div id="disclose-options" hidden>
+        <div class="row"><input type="checkbox" id="yourbrand"><label for="yourbrand">Your brand</label></div>
+        <div class="hint">You are promoting yourself or your own business. This video will be labeled as "Promotional content".</div>
+        <div class="row" id="row-branded"><input type="checkbox" id="branded"><label for="branded">Branded content</label></div>
+        <div class="hint" id="branded-hint">You are promoting another brand or a third party. This video will be labeled as "Paid partnership".</div>
+      </div>
+    </div>
+
+    <div class="row"><input type="checkbox" id="aigc"><label for="aigc">Label as AI-generated content</label></div>
+
+    <p class="consent" id="consent"></p>
+    <div class="actions">
+      <button class="post" id="post" disabled>Post</button>
+      <button class="cancel" id="cancel">Cancel</button>
+    </div>
+    <div class="error" id="error"></div>
+    <div class="status" id="status"><b id="status-head"></b><pre id="status-log"></pre></div>
+  </div>
+</div>
+</main>
+<script>
+(function () {
+  var params = new URLSearchParams(location.search);
+  var session = params.get('s') || '';
+  var api = params.get('api') || 'http://127.0.0.1:8743';
+  // Only ever talk to the studio script on this computer.
+  if (!/^http:\/\/(127\.0\.0\.1|localhost):\d+$/.test(api)) api = 'http://127.0.0.1:8743';
+  var $ = function (id) { return document.getElementById(id); };
+  var data = null, posting = false;
+  var LABELS = { PUBLIC_TO_EVERYONE: 'Everyone', MUTUAL_FOLLOW_FRIENDS: 'Friends', FOLLOWER_OF_CREATOR: 'Followers', SELF_ONLY: 'Only me' };
+  var MUSIC = '<a href="https://www.tiktok.com/legal/page/global/music-usage-confirmation/en" target="_blank" rel="noopener">Music Usage Confirmation</a>';
+  var BC = '<a href="https://www.tiktok.com/legal/page/global/bc-policy/en" target="_blank" rel="noopener">Branded Content Policy</a>';
+
+  function url(path) { return api + path + (path.indexOf('?') < 0 ? '?' : '&') + 's=' + encodeURIComponent(session); }
+
+  function fail(msg) { $('loading').textContent = msg; $('loading').hidden = false; $('app').hidden = true; }
+
+  fetch(url('/api/session')).then(function (r) {
+    if (!r.ok) throw new Error('This approval link is not active. Start the post again from AI Ads Studio.');
+    return r.json();
+  }).then(function (d) {
+    data = d;
+    var c = d.creator;
+    $('env').textContent = 'AI Ads Studio · Hvalby Digital' + (d.env === 'sandbox' ? ' · sandbox (posts are private until TikTok approves the app)' : '');
+    $('avatar').src = c.creator_avatar_url || '';
+    $('nickname').textContent = c.creator_nickname || '';
+    $('username').textContent = '@' + (c.creator_username || '');
+    $('video').src = url('/video');
+    var mins = Math.floor(d.video.duration / 60), secs = Math.round(d.video.duration % 60);
+    $('vmeta').textContent = d.video.name + ' · ' + mins + ':' + (secs < 10 ? '0' : '') + secs + ' · ' + d.video.width + '×' + d.video.height;
+    $('caption').value = d.caption;
+    $('caption').maxLength = d.max_caption;
+    (c.privacy_level_options || []).forEach(function (o) {
+      var opt = document.createElement('option');
+      opt.value = o; opt.textContent = LABELS[o] || o;
+      $('privacy').appendChild(opt);
+    });
+    [['comment', c.comment_disabled], ['duet', c.duet_disabled], ['stitch', c.stitch_disabled]].forEach(function (p) {
+      if (p[1]) { $(p[0]).disabled = true; $('row-' + p[0]).classList.add('disabled'); $('row-' + p[0]).title = 'Turned off in this account\'s TikTok settings'; }
+    });
+    $('aigc').checked = !!d.ai_generated;
+    $('loading').hidden = true;
+    $('app').hidden = false;
+    update();
+  }).catch(function (e) {
+    fail(e.message && e.message.indexOf('approval link') >= 0 ? e.message :
+      'Could not reach AI Ads Studio on this computer. Start the post from the studio (python3 scripts/tiktok.py publish … --execute), and allow this page to reach your computer if the browser asks.');
+  });
+
+  function update() {
+    if (!data) return;
+    $('count').textContent = $('caption').value.length + ' / ' + data.max_caption;
+    var privacy = $('privacy').value;
+    var disclose = $('disclose').checked;
+    $('disclose-options').hidden = !disclose;
+    if (!disclose) { $('yourbrand').checked = false; $('branded').checked = false; }
+    var privateOnly = privacy === 'SELF_ONLY';
+    $('branded').disabled = privateOnly;
+    $('row-branded').classList.toggle('disabled', privateOnly);
+    if (privateOnly) $('branded').checked = false;
+    $('branded-hint').textContent = privateOnly ? 'Branded content visibility cannot be set to private.' :
+      'You are promoting another brand or a third party. This video will be labeled as "Paid partnership".';
+    var yb = $('yourbrand').checked, bc = $('branded').checked;
+    $('consent').innerHTML = 'By posting, you agree to TikTok\'s ' + (bc ? BC + ' and ' : '') + MUSIC + '.';
+    var problem = '';
+    if (!privacy) problem = 'Choose who can view this video.';
+    else if (disclose && !yb && !bc) problem = 'You need to indicate if your content promotes yourself, a third party, or both.';
+    $('post').disabled = !!problem || posting;
+    $('error').textContent = privacy ? problem : '';
+  }
+
+  ['caption', 'privacy', 'disclose', 'yourbrand', 'branded', 'comment', 'duet', 'stitch', 'aigc'].forEach(function (id) {
+    $(id).addEventListener(id === 'caption' ? 'input' : 'change', update);
+  });
+
+  $('post').addEventListener('click', function () {
+    posting = true; update();
+    $('cancel').disabled = true;
+    var body = {
+      caption: $('caption').value, privacy_level: $('privacy').value,
+      allow_comment: $('comment').checked, allow_duet: $('duet').checked, allow_stitch: $('stitch').checked,
+      disclose: $('disclose').checked, your_brand: $('yourbrand').checked, branded_content: $('branded').checked,
+      ai_generated: $('aigc').checked
+    };
+    fetch(url('/api/post'), { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) })
+      .then(function (r) { return r.json().then(function (j) { if (!r.ok) throw new Error(j.error || 'Post failed'); return j; }); })
+      .then(function () { showStatus('Uploading to TikTok…', ''); poll(); })
+      .catch(function (e) { posting = false; $('cancel').disabled = false; $('error').textContent = e.message; update(); });
+  });
+
+  $('cancel').addEventListener('click', function () {
+    fetch(url('/api/cancel'), { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: '{}' })
+      .finally(function () { fail('Cancelled. Nothing was posted.'); });
+  });
+
+  function showStatus(head, cls) {
+    $('status').style.display = 'block';
+    $('status').className = 'status ' + cls;
+    $('status-head').textContent = head;
+  }
+
+  function poll() {
+    fetch(url('/api/status')).then(function (r) { return r.json(); }).then(function (s) {
+      $('status-log').textContent = (s.log || []).join('\n');
+      if (s.status === 'done') {
+        showStatus('Posted. It may take a few minutes to appear on the profile.', 'ok');
+      } else if (s.status === 'failed') {
+        showStatus('Not posted: ' + ((s.result && (s.result.error || (s.result.final && s.result.final.fail_reason))) || 'TikTok refused the post'), 'bad');
+      } else {
+        showStatus('Uploading to TikTok… it may take a few minutes for the post to appear on the profile.', '');
+        setTimeout(poll, 2000);
+      }
+    }).catch(function () { showStatus('Posting has finished. See the studio terminal for the result.', ''); });
+  }
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>AI Ads Studio · TikTok sign-in</title>
+<style>
+  :root { --text: #1d1d1f; --muted: #5f6368; --bg: #ffffff; }
+  @media (prefers-color-scheme: dark) { :root { --text: #ececec; --muted: #a0a0a0; --bg: #161616; } }
+  body { margin: 0; background: var(--bg); color: var(--text); font: 17px/1.6 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+  main { max-width: 560px; margin: 0 auto; padding: 72px 16px; }
+  h1 { font-size: 24px; margin: 0 0 12px; }
+  p { color: var(--muted); }
+</style>
+</head>
+<body>
+<main>
+<h1>Finishing the TikTok sign-in…</h1>
+<p id="msg">Handing the sign-in to AI Ads Studio on this computer.</p>
+</main>
+<script>
+  // TikTok redirects here with ?code=…&state=… (or ?error=…). The studio script waiting on this
+  // computer (127.0.0.1) completes the sign-in; nothing is stored or sent anywhere else.
+  (function () {
+    var q = window.location.search;
+    if (!q) {
+      document.getElementById('msg').textContent = 'No sign-in data in this link. Start the connection again from AI Ads Studio.';
+      return;
+    }
+    window.location.replace('http://127.0.0.1:8743/callback' + q);
+  })();
+</script>
+</body>
+</html>
